@@ -1,12 +1,47 @@
-const userName = document.getElementById("name");
-const surname = document.getElementById("surname");
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const confirmPassword = document.getElementById("confirmPassword");
-const button = document.getElementById("sign-up-button");
-const birthdate = document.getElementById("date");
-const profilePicture = document.getElementById("profile-picture");
-
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var userName = document.getElementById("name");
+var surname = document.getElementById("surname");
+var email = document.getElementById("email");
+var password = document.getElementById("password");
+var confirmPassword = document.getElementById("confirmPassword");
+var button = document.getElementById("sign-up-button");
+var birthdate = document.getElementById("date");
+var profilePicture = document.getElementById("profile-picture"); // поменять
 // let user = {
 //   email: "",
 //   password: "",
@@ -14,52 +49,67 @@ const profilePicture = document.getElementById("profile-picture");
 //   surname: "",
 //   birthdate: "",
 // };
-
-const errorMessages = {
-  surname: "Surname is not valid",
-  name: "Name is not valid",
-  email: "Email is not valid or user with this email already exists",
-  birthdate: "birthdate is not valid",
+var errorMessages = {
+    surname: "Surname is not valid",
+    name: "Name is not valid",
+    email: "Email is not valid or user with this email already exists",
+    birthdate: "birthdate is not valid",
 };
-
-button.addEventListener("click", (e) => {
-  e.preventDefault();
-  if (password.value === confirmPassword.value) {
-    console.log("Passwords are the same");
-    newUser();
-  } else {
-    console.log("Passwords are NOT the same");
-  }
-});
-
-async function newUser() {
-  try {
-    const res = await fetch("/sign-up", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: email.value,
-        password: password.value,
-        name: userName.value,
-        surname: surname.value,
-        birthdate: birthdate.value,
-      }),
-    });
-    const jsonBody = await res.json();
-    if (jsonBody.success) {
-      // window.location.href = "/profile";
-      fetch("/profile");
-    } else {
-      // чат сделал, я чёто не понял. Надо разобраться
-      Object.entries(jsonBody).forEach(([field, isValid]) => {
-        // console.log(field, isValid);
-
-        if (!isValid && errorMessages[field]) {
-          alert(errorMessages[field]); //добавить красную обводку и вывод текстом, для каждого поля
-        }
-      });
+//////
+button.addEventListener("click", function (e) {
+    e.preventDefault();
+    if (password.value === confirmPassword.value) {
+        console.log("Passwords are the same");
+        newUser();
     }
-  } catch (error) {
-    console.error("Ошибка при запросе:", error);
-  }
+    else {
+        console.log("Passwords are NOT the same");
+    }
+});
+function newUser() {
+    return __awaiter(this, void 0, void 0, function () {
+        var res, jsonBody, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, fetch("/sign-up", {
+                            method: "PATCH",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                email: email.value,
+                                password: password.value,
+                                name: userName.value,
+                                surname: surname.value,
+                                birthdate: birthdate.value,
+                            }),
+                        })];
+                case 1:
+                    res = _a.sent();
+                    return [4 /*yield*/, res.json()];
+                case 2:
+                    jsonBody = _a.sent();
+                    if (jsonBody.success) {
+                        // window.location.href = "/profile";
+                        fetch("/profile");
+                    }
+                    else {
+                        // чат сделал, я чёто не понял. Надо разобраться
+                        Object.entries(jsonBody).forEach(function (_a) {
+                            // console.log(field, isValid);
+                            var field = _a[0], isValid = _a[1];
+                            if (!isValid && errorMessages[field]) {
+                                alert(errorMessages[field]); //добавить красную обводку и вывод текстом, для каждого поля
+                            }
+                        });
+                    }
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_1 = _a.sent();
+                    console.error("Ошибка при запросе:", error_1);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
 }

@@ -4,7 +4,7 @@ import crypto from "crypto";
 type ValidKeys = "email" | "password" | "name" | "surname" | "birthdate" | "id";
 type User = Record<ValidKeys, string | null>;
 
-export async function sha256(message: string | null) {
+export async function sha256(message: string | null): Promise<string | null> {
   if (!message) {
     return null;
   }
@@ -17,19 +17,19 @@ export async function sha256(message: string | null) {
   return hashHex;
 }
 
-export function validateName(name: string | null) {
+export function validateName(name: string | null): boolean {
   if (!name) return false;
   const regex = /^[\p{L}\s]+$/u;
   return regex.test(name);
 }
 
-export function validateEmail(email: string | null) {
+export function validateEmail(email: string | null): boolean {
   if (!email) return false;
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email);
 }
 
-export function userValidation(user: User) {
+export function userValidation(user: User): User {
   const validUser = user;
   if (!validateName(user.name)) validUser.name = null;
   if (!validateName(user.surname)) validUser.surname = null;
@@ -38,7 +38,7 @@ export function userValidation(user: User) {
   return validUser;
 }
 
-export async function addUser(newUser: User) {
+export async function addUser(newUser: User): Promise<boolean> {
   const requiredFields: ValidKeys[] = [
     "email",
     "password",
@@ -60,5 +60,13 @@ export async function addUser(newUser: User) {
   } catch (err) {
     console.log(err);
     return false;
+  }
+}
+//@ts-expect-error
+export function authenticateToken(res, req, next) {
+  const authToken = req.header["authentication"];
+  const token = authToken && authToken.split(" ")[1];
+  if (token == null) {
+    return res.sendStatus(401);
   }
 }

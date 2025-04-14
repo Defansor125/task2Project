@@ -1,7 +1,10 @@
+import "dotenv/config";
+
 import { Router } from "express";
 import { promises as fs } from "fs";
 import { sha256, userValidation, addUser } from "../services/auth.service.js";
 import { Request } from "express";
+import jwt from "jsonwebtoken";
 
 type ValidKeys = "email" | "password" | "name" | "surname" | "birthdate" | "id";
 type User = Record<ValidKeys, string | null>;
@@ -40,6 +43,15 @@ router.patch("/sign-up", async (req: Request<{}, {}, User>, res) => {
   }
 
   if (await addUser(userAnswer)) {
+    if (userAnswer.id === null) {
+      console.log("1213");
+      return;
+    }
+    // добавление проверенного юзера
+    const accessToken = jwt.sign(
+      userAnswer.id,
+      "ab8e7895-a0e4-435b-8f9f-188bd2284687"
+    );
     res.json({ success: true });
   } else res.json(userAnswer);
 });
@@ -60,5 +72,15 @@ router.post("/login", async (req, res) => {
     res.json({ success: false });
   }
 });
+//@ts-expect-error
+function authenticateToken(res, req, next) {
+  const authToken = req.header["authentication"];
+  const token = authToken && authToken.split(" ")[1];
+  if (token == null) {
+    return res.sendStatus(401);
+  }
+  jwt.
+  
+}
 
 export default router;

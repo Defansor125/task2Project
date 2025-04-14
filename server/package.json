@@ -7,7 +7,11 @@
     "handlebars": "^4.7.8"
   },
   "scripts": {
-    "start": "nodemon"
+    "watch:sign-up": "tsc ./views/sign-up/sign-up.ts --outDir ./views/sign-up/ --watch",
+    "watch:start-page": "tsc ./views/start-page/startpage.ts --outDir ./views/start-page --watch",
+    "watch:profile": "tsc ./views/profile/profile.ts --outDir ./views/profile --watch",
+    "start": "nodemon",
+    "dev": "concurrently \"npm:start\" \"npm:watch:sign-up\" \"npm:watch:start-page\" \"npm:watch:profile\""
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
