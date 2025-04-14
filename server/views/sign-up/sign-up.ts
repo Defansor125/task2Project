@@ -1,3 +1,5 @@
+import { ApiError } from "../../routes/api-error";
+
 const userName = document.getElementById("name") as HTMLInputElement;
 const surname = document.getElementById("surname") as HTMLInputElement;
 const email = document.getElementById("email") as HTMLInputElement;
@@ -38,10 +40,15 @@ button.addEventListener("click", (e): void => {
   }
 });
 
+// type guards
+function isError(object: object): object is ApiError {
+  return (object as any).error === true;
+}
+
 async function newUser(): Promise<void> {
   try {
     const res = await fetch("/sign-up", {
-      method: "PATCH",
+      method: "PATCH", // Post
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: email.value,
@@ -51,21 +58,20 @@ async function newUser(): Promise<void> {
         birthdate: birthdate.value,
       }),
     });
-    const jsonBody = await res.json();
-    if (jsonBody.success) {
-      // window.location.href = "/profile";
-      fetch("/profile");
-    } else {
-      // чат сделал, я чёто не понял. Надо разобраться
-      Object.entries(jsonBody).forEach(([field, isValid]) => {
-        // console.log(field, isValid);
 
-        if (!isValid && errorMessages[field]) {
-          alert(errorMessages[field]); //добавить красную обводку и вывод текстом, для каждого поля
-        }
+    const json = await res.json();
+
+    if (isError(json)) {
+      json.messages.forEach((message) => {
+        alert(message); //добавить красную обводку и вывод текстом, для каждого поля
       });
+
+      return;
     }
+
+    fetch("/profile");
   } catch (error) {
     console.error("Ошибка при запросе:", error);
   }
 }
+//

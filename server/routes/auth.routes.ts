@@ -33,12 +33,12 @@ router.patch("/sign-up", async (req: Request<{}, {}, User>, res) => {
   };
 
   userAnswer = userValidation(userAnswer);
-  const user = users.find(
-    (user: { email: string | null }) => user.email === email
-  );
+  const user = users.find((user) => user.email === email);
+
   if (user) {
-    userAnswer.email = null;
-    res.json(userAnswer);
+    res
+      .status(400)
+      .json({ messages: ["Такой пользователь уже существует"], error: true });
     return;
   }
 
@@ -72,15 +72,5 @@ router.post("/login", async (req, res) => {
     res.json({ success: false });
   }
 });
-//@ts-expect-error
-function authenticateToken(res, req, next) {
-  const authToken = req.header["authentication"];
-  const token = authToken && authToken.split(" ")[1];
-  if (token == null) {
-    return res.sendStatus(401);
-  }
-  jwt.
-  
-}
 
 export default router;
